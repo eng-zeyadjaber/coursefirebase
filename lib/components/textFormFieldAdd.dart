@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-class CustomeTextForm extends StatelessWidget {
+class CustomeTextFormAdd extends StatelessWidget {
   final String hintText;
   final TextEditingController mycontroller;
-   final String? Function(String?)? validator;
-  const CustomeTextForm({
+  final String? Function(String?)? validator;
+  const CustomeTextFormAdd({
     super.key,
     required this.hintText,
     required this.mycontroller,
-    required this.validator
+    required this.validator,
   });
 
   @override
