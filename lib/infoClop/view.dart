@@ -4,6 +4,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebasecourse/categories/edit.dart';
 import 'package:firebasecourse/infoClop/add.dart';
 import 'package:firebasecourse/infoClop/edit.dart';
@@ -96,6 +97,12 @@ class _HomepageState extends State<ViewInfoClop> {
                               .collection("Legend")
                               .doc(data[i].id)
                               .delete();
+                          // مازبط بسبب اشتراك الفاير بيس خاص بالحذف
+                          // if (data[i]["url"] != "none") {
+                          //   FirebaseStorage.instance
+                          //       .refFromURL(data[i]["url"])
+                          //       .delete();
+                          // }
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) =>
@@ -120,7 +127,12 @@ class _HomepageState extends State<ViewInfoClop> {
                       child: Container(
                         padding: EdgeInsets.all(20),
                         child: Column(
-                          children: [Text("${data[i]["nameteam"]}")],
+                          children: [
+                            Text("${data[i]["nameteam"]}"),
+                            // مازبط بسبب اشتراك الفاير بيس خاص بالعرض
+                            // if (data[i]["url"] != "none")
+                            //   Image.network(data[i]["nameteam"]),
+                          ],
                         ),
                       ),
                     ),

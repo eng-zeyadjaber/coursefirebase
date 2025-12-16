@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebasecourse/2-%20install.dart';
 import 'package:firebasecourse/auth/login.dart';
 import 'package:firebasecourse/auth/signup.dart';
 import 'package:firebasecourse/categories/add.dart';
 import 'package:firebasecourse/filter.dart';
 import 'package:firebasecourse/homepage.dart';
+import 'package:firebasecourse/massaging.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 // import 'package:firebase_app_check/firebase_app_check.dart';
@@ -56,11 +58,11 @@ class _myappState extends State<MyApp> {
         ),
       ),
       debugShowCheckedModeBanner: false,
-      home: Filter(),
-          // (FirebaseAuth.instance.currentUser != null &&
-          //     FirebaseAuth.instance.currentUser!.emailVerified)
-          // ? Homepage()
-          // : Login(),
+      home: Massaging(),
+      // (FirebaseAuth.instance.currentUser != null &&
+      //     FirebaseAuth.instance.currentUser!.emailVerified)
+      // ? Homepage()
+      // : Login(),
       routes: {
         "login": (context) => Login(),
         "signup": (context) => SignUp(),

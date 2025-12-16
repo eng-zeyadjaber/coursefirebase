@@ -1,6 +1,7 @@
 import 'dart:io';
-
+import 'package:path/path.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -13,15 +14,22 @@ class Filter extends StatefulWidget {
 
 class _FilterState extends State<Filter> {
   File? file;
+  String? url;
   getImage() async {
     final ImagePicker picker = ImagePicker();
     // Pick an image.
     final XFile? imagePlayer = await picker.pickImage(
-      source: ImageSource.camera,
+      source: ImageSource.gallery,
     );
+    if (imagePlayer != null) {
+      file = File(imagePlayer!.path);
+    }
+    var imagename = basename(imagePlayer!.path);
+    var storplayer = FirebaseStorage.instance.ref(imagename);
+    await storplayer.putFile(file!);
+    url = await storplayer.getDownloadURL();
     // Capture a photo.
     // final XFile? photo = await picker.pickImage(source: ImageSource.camera);
-    file = File(imagePlayer!.path);
     setState(() {});
   }
 
@@ -72,70 +80,75 @@ class _FilterState extends State<Filter> {
         },
       ),
       body: Container(
-        child: StreamBuilder(
-          stream: playersStream,
-          builder: (context, AsyncSnapshot<QuerySnapshot> player) {
-            if (player.hasError) {
-              return Text("ERROR");
-            }
-            if (player.connectionState == ConnectionState.waiting) {
-              return Text("Loding ...");
-            }
-            return ListView.builder(
-              itemCount: player.data!.docs.length,
-              itemBuilder: (context, i) {
-                return InkWell(
-                  onTap: () {
-                    DocumentReference documentReference = FirebaseFirestore
-                        .instance
-                        .collection('players')
-                        .doc(player.data!.docs[i].id);
-                    FirebaseFirestore.instance.runTransaction((
-                      transaction,
-                    ) async {
-                      DocumentSnapshot snapshot = await transaction.get(
-                        documentReference,
-                      );
-                      if (snapshot.exists) {
-                        var snapshotData = snapshot.data();
-                        if (snapshotData is Map<String, dynamic>) {
-                          int marketValue = snapshotData["market value"] + 5;
-                          transaction.update(documentReference, {
-                            "market value": marketValue,
+        child: Column(
+          children: [
+            Expanded(
+              child: StreamBuilder(
+                stream: playersStream,
+                builder: (context, AsyncSnapshot<QuerySnapshot> player) {
+                  if (player.hasError) {
+                    return Text("ERROR");
+                  }
+                  if (player.connectionState == ConnectionState.waiting) {
+                    return Text("Loding ...");
+                  }
+                  return ListView.builder(
+                    itemCount: player.data!.docs.length,
+                    itemBuilder: (context, i) {
+                      return InkWell(
+                        onTap: () {
+                          DocumentReference documentReference =
+                              FirebaseFirestore.instance
+                                  .collection('players')
+                                  .doc(player.data!.docs[i].id);
+                          FirebaseFirestore.instance.runTransaction((
+                            transaction,
+                          ) async {
+                            DocumentSnapshot snapshot = await transaction.get(
+                              documentReference,
+                            );
+                            if (snapshot.exists) {
+                              var snapshotData = snapshot.data();
+                              if (snapshotData is Map<String, dynamic>) {
+                                int marketValue =
+                                    snapshotData["market value"] + 5;
+                                transaction.update(documentReference, {
+                                  "market value": marketValue,
+                                });
+                              }
+                            }
                           });
-                        }
-                      }
-                    });
-                  },
-                  child: Card(
-                    child: ListTile(
-                      subtitle: Text(
-                        "market value : ${player.data!.docs[i]['market value']}M",
-                      ),
-                      leading: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(player.data!.docs[i]['Country']),
-                          IconButton(
-                            icon: Icon(Icons.camera_alt, color: Colors.blue),
-                            onPressed: () {
-                              getImage();
-                            },
+                        },
+                        child: Card(
+                          child: ListTile(
+                            subtitle: Text(
+                              "market value : ${player.data!.docs[i]['market value']}M",
+                            ),
+                            leading: Text(player.data!.docs[i]['Country']),
+                            title: Text(
+                              player.data!.docs[i]['Name'],
+                              style: TextStyle(fontSize: 30),
+                            ),
+                            trailing: Text(
+                              "Num : ${player.data!.docs[i]['Num']}",
+                            ),
                           ),
-                        ],
-                      ),
-
-                      title: Text(
-                        player.data!.docs[i]['Name'],
-                        style: TextStyle(fontSize: 30),
-                      ),
-                      trailing: Text("Num : ${player.data!.docs[i]['Num']}"),
-                    ),
-                  ),
-                );
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+            MaterialButton(
+              onPressed: () async {
+                await getImage();
               },
-            );
-          },
+              child: Text("Get Image Galary"),
+            ),
+            if (url != null)
+              Image.network(url!, width: 100, height: 100, fit: BoxFit.fill),
+          ],
         ),
       ),
     );

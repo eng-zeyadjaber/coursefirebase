@@ -20,3 +20,27 @@ class CoustomButtonAuth extends StatelessWidget {
     );
   }
 }
+
+////////////////////////////////////////////////////////////////////////////////
+
+class CoustomButtonUpload extends StatelessWidget {
+  final void Function()? onPressed;
+  final String title;
+  final bool isSelected;
+  const CoustomButtonUpload({super.key, this.onPressed, required this.title, required this.isSelected});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: MaterialButton(
+        height: 35,
+        minWidth: 200,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        color: isSelected ? const Color.fromARGB(255, 0, 10, 99) : Colors.lightBlue,
+        textColor: Colors.white,
+        onPressed: onPressed,
+        child: Text(title, style: TextStyle(fontSize: 20)),
+      ),
+    );
+  }
+}
