@@ -10,15 +10,15 @@ class Massaging extends StatefulWidget {
 }
 
 class _MassagingState extends State<Massaging> {
-      // في حال كان الإشعار يأتي والمستخدم داخل فالتطبيق
-    // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    //   if (message.notification != null) {
-    //     print("=================================================");
-    //     print(message.notification!.title);
-    //     print(message.notification!.body);
-    //     print("=================================================");
-    //   }
-    // });
+  // في حال كان الإشعار يأتي والمستخدم داخل فالتطبيق
+  // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+  //   if (message.notification != null) {
+  //     print("=================================================");
+  //     print(message.notification!.title);
+  //     print(message.notification!.body);
+  //     print("=================================================");
+  //   }
+  // });
   getToken() async {
     String? mytoken = await FirebaseMessaging.instance.getToken();
     print("==========================================================");
@@ -44,7 +44,7 @@ class _MassagingState extends State<Massaging> {
   @override
   void initState() {
     chatReqPermission();
-        // في حال كان الإشعار يأتي والمستخدم داخل فالتطبيق
+    // في حال كان الإشعار يأتي والمستخدم داخل فالتطبيق
     // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     //   if (message.notification != null) {
     //     print("=================================================");
@@ -59,6 +59,11 @@ class _MassagingState extends State<Massaging> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: Text("Massaging")));
+    return Scaffold(
+      appBar: AppBar(title: Text("Massaging")),
+      body: Center(
+        child: ElevatedButton(onPressed: () async {}, child: Text("Enter")),
+      ),
+    );
   }
 }
