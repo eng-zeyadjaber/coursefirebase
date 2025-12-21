@@ -43,3 +43,11 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+# ===== Firebase (Sensitive) =====
+android/app/google-services.json
+firebase.json
+
+# ===== Keys / Secrets =====
+important_key/
+*.keystore
+*.jks

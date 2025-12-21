@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebasecourse/2-%20install.dart';
@@ -5,10 +6,9 @@ import 'package:firebasecourse/auth/login.dart';
 import 'package:firebasecourse/auth/signup.dart';
 import 'package:firebasecourse/categories/add.dart';
 import 'package:firebasecourse/filter.dart';
-
+import 'firebase_options.dart';
 import 'package:firebasecourse/homepage.dart';
 import 'package:firebasecourse/massaging.dart';
-import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 // import 'package:firebase_app_check/firebase_app_check.dart';
 
@@ -17,7 +17,9 @@ void main() async {
   // await FirebaseAppCheck.instance.activate(
   //   androidProvider: AndroidProvider.debug,
   // );
+  WidgetsFlutterBinding.ensureInitialized();
 
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(MyApp());
 }
 
