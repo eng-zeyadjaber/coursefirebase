@@ -44,8 +44,8 @@ class _MassagingState extends State<Massaging> {
   @override
   void initState() {
     chatReqPermission();
-    // في حال كان الإشعار يأتي والمستخدم داخل فالتطبيق
-    // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    // في حال كان الإشعار يأتي والمستخدم خارج التطبيق
+    // FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
     //   if (message.notification != null) {
     //     print("=================================================");
     //     print(message.notification!.title);
@@ -53,6 +53,10 @@ class _MassagingState extends State<Massaging> {
     //     print("=================================================");
     //   }
     // });
+
+    // في حال كان الإشعار يأتي والتطبيق مغلق
+    // FirebaseMessaging.instance.getInitialMessage();
+    // Firebase Cloud Messaging API (V1) عن طريق
     getToken();
     super.initState();
   }
